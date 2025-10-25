@@ -121,35 +121,6 @@ Column {data-width=700}
 
 ### Zona de trabajo 5
 
-```{r}
-### Columna 1 {data-width=100}
-
-# Simulamos la variable que quieres representar (ejemplo: 65)
-# **Reemplaza `variable_actual` con tu dato real o código de cálculo.**
-variable_actual <- 65
-
-# Utilizamos la sintaxis de `flexdashboard` para crear el medidor (gauge)
-
-gauge(
-  value = variable_actual,      # El valor que se mostrará en el manómetro
-  min = 0,                      # El valor mínimo del rango
-  max = 100,                    # El valor máximo del rango
-  label = "Nivel de Rendimiento", # Etiqueta del medidor
-  sectors = sector(            # Definición de las zonas de color
-    # Zona ROJA (0 a 50)
-    x = c(0, 50), 
-    color = "red"
-  ),
-  sectors = sector(            # Zona AMARILLA (50 a 75)
-    x = c(50, 75), 
-    color = "yellow"
-  ),
-  sectors = sector(            # Zona VERDE (75 a 100)
-    x = c(75, 100), 
-    color = "green"
-  )
-)
-```
 
 ### Zona de trabajo 6
 
