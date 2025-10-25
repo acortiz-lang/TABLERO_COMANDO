@@ -121,16 +121,106 @@ Column {data-width=700}
 
 ### Zona de trabajo 5
 
-
-### Zona de trabajo 6
-
 ```{r}
+# Cargar la librería necesaria para el gráfico
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(scales) # Para formatear los porcentajes
 
+# 1. Definir los datos 📊
+
+# Nombres de los meses (eje X)
+meses <- month.name[1:12] # Usa month.name para nombres en inglés (por defecto en R)
+# Si quieres los nombres en español, puedes definirlos así:
+# meses_espanol <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+#                    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+
+# Avance Teórico (distribuido uniformemente)
+# Avance Acumulado Teórico
+avance_teorico_mensual <- 100/12
+avance_teorico_acumulado <- cumsum(rep(avance_teorico_mensual, 12))
+
+# Avance Real (tus valores proporcionados)
+# Están en porcentajes, los convertimos a decimal para ggplot
+avance_real_mensual_pct <- c(20, 5, 15, 30, 8, 45, 6, 10, 35, 25, 0, 0)
+avance_real_mensual <- avance_real_mensual_pct / 100
+avance_real_acumulado <- cumsum(avance_real_mensual)
+
+
+# 2. Crear un marco de datos (data frame) y transformar (tidy)
+
+datos_avance <- data.frame(
+  Mes = factor(meses, levels = meses), # Asegurar el orden correcto en el eje X
+  Teorico = avance_teorico_acumulado,
+  Real = avance_real_acumulado
+)
+
+# Convertir de formato "wide" a "long" para facilitar el uso de ggplot (mejor práctica)
+datos_long <- datos_avance %>%
+  pivot_longer(
+    cols = c(Teorico, Real),
+    names_to = "Tipo_Avance",
+    values_to = "Avance_Acumulado"
+  )
+
+# 3. Crear el gráfico con ggplot2 🏗️
+grafico <- ggplot(datos_long, aes(x = Mes, y = Avance_Acumulado, fill = Tipo_Avance)) +
+  
+  # Añadir las barras (position = "dodge" las pone lado a lado)
+  geom_bar(stat = "identity", position = "dodge", alpha = 0.8) +
+  
+  # Añadir etiquetas de valor sobre las barras
+  geom_text(
+    aes(label = percent(Avance_Acumulado / 100, accuracy = 1)), # Formatear como %
+    position = position_dodge(width = 0.9), # Posicionar encima de las barras
+    vjust = -0.5, # Ajuste vertical
+    size = 3.5,
+    fontface = "bold"
+  ) +
+  
+  # Títulos y etiquetas
+  labs(
+    title = "Comparación de Avance de Obra (Acumulado)",
+    subtitle = "Avance Teórico vs. Avance Real",
+    x = "Mes",
+    y = "Avance Acumulado",
+    fill = "Tipo de Avance"
+  ) +
+  
+  # Escala del eje Y en porcentajes
+  scale_y_continuous(
+    labels = percent_format(accuracy = 1), # Formatear como porcentaje
+    limits = c(0, 105) # Asegurar que las etiquetas quepan
+  ) +
+  
+  # Colores más amigables (opcional)
+  scale_fill_manual(values = c("Teorico" = "#4CAF50", "Real" = "#2196F3")) + # Verde y Azul
+  
+  # Tema para una mejor apariencia
+  theme_minimal() +
+  
+  # Ajustes adicionales del tema
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1) # Rotar etiquetas para mejor lectura
+  )
+
+# Mostrar el gráfico
+print(grafico)
 ```
 
 
-Documentacion
-======
+### Zona de trabajo 6
+
+
+![PROGRESO DE OBRA](obra.jpg)
+
+
+
+Documentación
+===========================================================
 
 
 
@@ -142,13 +232,13 @@ Column {data-width=350}
 ### Habilitaciones municipales
 En esta sección presentamos el listado de los tramites presentados a la municipalidad que aun no estan aprobados
 ```{r}
-
 ```
 
 Column {data-width=700}
 -----------------------------------------------------------------------
 
 ### Planos proyecto ejecutivo
+
 
 ```{r}
 
