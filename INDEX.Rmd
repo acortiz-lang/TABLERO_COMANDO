@@ -1,0 +1,162 @@
+---
+title: "Tablero de comando"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+Avance 1
+=====================================
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Zona de trabajo 1
+
+```{r}
+ plot(cars,main="Consumo de aridos", xlab="semana",ylab="m3")
+```
+
+Column {data-width=700}
+-----------------------------------------------------------------------
+
+### Zona de trabajo 2
+
+```{r}
+library(ggplot2)
+
+# El data frame 'cars' ya está cargado por defecto en R
+
+ggplot(cars, aes(x = speed, y = dist)) +
+  # 1. Grafica la nube de puntos
+  geom_point() +
+  # 2. Añade la línea de regresión lineal (la aproximación)
+  #    - method = "lm" indica un Modelo Lineal (Linear Model)
+  #    - se = FALSE elimina la banda de error (sombra)
+  #    - color = "green" establece el color de la línea
+  geom_smooth(
+    method = "lm",
+    se = FALSE,
+    color = "green"
+  ) +
+  # Opcional: Títulos para claridad
+  labs(
+    title = "Relación Lineal entre Velocidad y Distancia de Frenado (cars)",
+    x = "Velocidad (mph)",
+    y = "Distancia de Frenado (ft)"
+  )
+```
+
+### Zona de trabajo 3
+
+```{r}
+# Cargar la librería necesaria
+library(plotly)
+library(dplyr) # Útil para la manipulación de datos
+
+# 1. Crear el data frame con tus costos
+datos_costos <- data.frame(
+  variable = c("materiales", "mano de obra", "combustibles", "maquinaria", "mantenimiento"),
+  costo = c(500, 200, 100, 300, 150)
+)
+# 2. Crear el gráfico de pastel interactivo
+
+grafico_pastel <- plot_ly(datos_costos, 
+                          labels = ~variable, 
+                          values = ~costo, 
+                          type = 'pie',
+                          # Personaliza el texto al pasar el ratón (hover text)
+                          textinfo = 'label+percent', 
+                          insidetextorientation = 'radial') %>%
+  
+  # Añadir título y configurar el layout
+  layout(title = 'Distribución de Costos Semanales de Obra',
+         # Asegura que se vea como un círculo
+         uniformtext = list(minsize = 12, mode = 'hide'),
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+
+# Mostrar el gráfico
+grafico_pastel
+```
+
+Utilizaremos la tecnica para importar datos de excel
+
+
+
+
+
+
+
+
+
+
+Seguridad
+===============
+
+
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Zona de trabajo 4
+
+```{r}
+library(readxl)
+prueba1 <- read_excel("prueba1.xlsx")
+prueba1
+pie(prueba1$Costo)
+```
+
+
+Column {data-width=700}
+-----------------------------------------------------------------------
+
+### Zona de trabajo 5
+
+
+### Zona de trabajo 6
+
+```{r}
+
+```
+
+
+Documentacion
+======
+
+
+
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Habilitaciones municipales
+En esta sección presentamos el listado de los tramites presentados a la municipalidad que aun no estan aprobados
+```{r}
+
+```
+
+Column {data-width=700}
+-----------------------------------------------------------------------
+
+### Planos proyecto ejecutivo
+
+```{r}
+
+```
+
+### Aforos 
+
+```{r}
+
+```
+
